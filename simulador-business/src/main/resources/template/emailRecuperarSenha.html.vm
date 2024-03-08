@@ -1,0 +1,15 @@
+<html>
+	<body>
+		
+		<h3>
+			Nova Senha temporária
+		</h3>
+		<h2>
+			${novaSenha}
+		</p>
+		
+		</h2>
+		
+	</body>
+ 
+</html>

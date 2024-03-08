@@ -1,0 +1,64 @@
+<!-- container -->
+<md-content class="application-content md-padding layout-xs-column layout-align-center-center layout-row" style="overflow: visible" layout-xs="column" layout="row" layout-align="center center" ng-controller="loginCtrl">
+    <div flex-xs="100" flex-gt-xs="70" flex-gt-md="40" layout="column" layout-align="center" class="md-whiteframe-24dp shadow-menu">
+    	<form class="form" ng-submit="login()" name="formLogin" novalidate>
+        <md-card class="card-40-center no-margin" flex>
+
+            <md-toolbar class="md-primary layout-row">
+			  <div class="md-toolbar-tools">
+			    <h2 class="md-flex" hide-xs>{{ 'APPLICATION_NAME' | translate }}</h2>
+				<h2 class="md-flex" hide-gt-xs>{{ 'SHORT_APPLICATION_NAME' | translate }}</h2>
+			  </div>
+			 <md-menu md-position-mode="target-right target">
+				    <md-button class="md-icon-button" hide-gt-xs ng-click="$mdOpenMenu($event)">
+				    	<md-icon md-svg-icon="resources/img/icons/ic_more_vert_24px.svg"></md-icon>
+				    </md-button>
+			    	<md-menu-content width="1" layout-align="center center">
+			      		<md-menu-item>
+		         			<md-button class="md-icon-button md-hue-1" aria-label="{{ 'PORTUGUESE' | translate }}" ng-click="changeLanguage('pt_BR')">
+								{{ 'PT' | translate }}
+							</md-button>
+			       		</md-menu-item>
+			       		<md-menu-divider></md-menu-divider>
+			       		<md-menu-item>
+		         			<md-button class="md-icon-button md-hue-1" aria-label="{{ 'ENGLISH' | translate }}" ng-click="changeLanguage('en')">
+					    		{{ 'EN' | translate }}
+						    </md-button>
+			       		</md-menu-item>
+			    	</md-menu-content>
+				</md-menu>
+			</md-toolbar>
+      
+            	<md-card-content class="md-padding layout-align-center-stretch" layout-align="center">
+	                <div layout="column" class="layout-column">
+	           		  <md-input-container class="md-block">
+	           		  	<md-icon md-svg-src="resources/img/icons/ic_person_24px.svg"></md-icon>
+				        <label for="username">{{ 'USER' | translate }}</label>
+				        <input type="text" name="username" id="username" ng-model="credentials.username" required>
+				        <div ng-messages="formLogin.username.$error">
+				          <div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+				        </div>
+				      </md-input-container>
+				      
+				      <md-input-container class="md-block">
+				      	<md-icon md-svg-src="resources/img/icons/ic_lock_24px.svg"></md-icon>
+				        <label for="password">{{ 'PASSWORD' | translate }}</label>
+				        <input type="password" name="password" id="password" ng-model="credentials.password" required>
+				        <div ng-messages="formLogin.password.$error">
+				          <div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+				        </div>
+				      </md-input-container>
+	                </div>
+                
+                </md-card-content>
+                
+	            <section layout="row" layout-align="center center" layout-wrap class="section-buttons">
+	                <md-button type="submit" ng-disabled="!formLogin.$valid" class="md-raised md-primary"  flex-xs='100'>{{ 'SING_IN' | translate }}</md-button>
+					<md-button type="button" class="md-raised md-primary" ng-click="showForgotDialog($event)"  flex-xs='100'>{{ 'FORGOT_PASSWORD' | translate }}</md-button>
+	            </section>
+	            
+			</md-card>
+		
+		</form>
+	</div>
+</md-content>

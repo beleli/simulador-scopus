@@ -1,0 +1,353 @@
+ <form class="form" name="formTransactions" novalidate ng-submit="save()">
+<md-content style="overflow: visible">
+	<div>
+		<md-card class="no-margin">
+			<md-toolbar>
+				<div class="md-toolbar-tools">
+					<h2>{{ 'MENU_TRANSACTION' | translate }}</h2>
+					<span flex></span>
+				</div>
+	   		</md-toolbar>
+			<md-card-content class="md-padding layout-align-center-stretch" layout-get-xs="column" layout-align="center">
+			<md-tabs md-dynamic-height md-border-bottom md-selected="selectedTabIndex">
+				 <md-tab label="Cadastro">
+				        <md-card-content class="md-padding layout-align-center-stretch">
+				         <div layout="row" layout-align="end end">
+					<div layout-align="end" class="text-font-12">
+						<md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'LBL_FIELDS_SEARCH' | translate }}
+					</div>
+				</div>
+				<div layout-gt-xs="row">
+					<md-input-container class="md-block" flex flex-gt-xs="50">
+						<label><md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'NAME_TRANSACTION' | translate }}</label>
+						<input type="text" name="name" id="name" ng-model="transaction.name" ng-maxlength="8"  max-length="8" required ng-pattern="/^[a-zA-Z0-9]*$/"/>
+						<div ng-if="formTransactions.name.$touched" ng-messages="formTransactions.name.$error">
+							<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+							<div ng-message="maxlength">{{ 'MESSAGE_ERROR_PATTERN_NUMBER' | translate: {maxlength= "8"  }'}}></div>
+							<div ng-message="pattern">{{ 'MESSAGE_ERROR_SPECIAL_CHAR' | translate }}</div>
+						</div>
+					</md-input-container>
+				</div>
+				<div layout-gt-xs="row">
+					<md-input-container class="md-block" flex flex-gt-xs="50">
+						<label>{{ 'DESCRIPTION_LAYOUT_TRANSACTION' | translate }}</label>
+						<input type="text" name="description" id="description" ng-model="transaction.description" max-length="60" ng-maxlength="60"/>
+						<div ng-if="formTransactions.description.$touched" ng-messages="formTransactions.description.$error">
+							<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+							<div ng-message="maxlength">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate: {maxlength= "60"  }'}}></div>
+							<div ng-message="pattern">{{ 'MESSAGE_ERROR_PATTERN_NUMBER' | translate }}</div>
+						</div>
+					</md-input-container>
+				</div>
+				<div layout-gt-xs="row" ng-if="transaction.transactionParentId == null">
+					<md-input-container class="md-block" flex flex-gt-xs="50">
+						<label><md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'TYPE_TRANSACTION' | translate }}</label>
+						<md-select name="type" id="type" ng-model="transaction.transactionTypeId" required>
+							<md-option ng-repeat="type in transactionTypes" value="{{type.id}}">{{type.name}}</md-option>
+						</md-select>
+						<div ng-if="formTransactions.type.$touched" ng-messages="formTransactions.type.$error">
+							<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+						</div>
+					</md-input-container>
+				</div>
+				<div layout-gt-xs="row" ng-if="transaction.transactionParentId == null">
+					<md-input-container class="md-block" flex flex-gt-xs="50">
+						<label for="format">{{ 'FORMAT_FIELDS' | translate }}</label>
+						<md-select name="format" id="format" ng-model="transaction.transactionEncodingId" required>
+							<md-option ng-repeat="format in transactionFormats" value="{{format.id}}">{{format.name}}</md-option>
+						</md-select>
+						<div ng-if="formTransactions.format.$touched" ng-messages="formTransactions.format.$error">
+							<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+						</div>
+					</md-input-container>
+				</div>
+				<div layout-gt-xs="row" ng-if="transaction.transactionParentId == null">
+					<md-input-container class="md-block" flex flex-gt-xs="50">
+						<label><md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'ROUTER_TRANSACTION' | translate }}</label>
+						<md-select ng-model="transaction.routerTypeId" ng-change="routerChange()">
+							<md-option><em>Nenhuma</em></md-option>
+							<md-option ng-repeat="type in transactionTypes" ng-value="{{type.id}}">{{type.name}}</md-option>
+						</md-select>
+					</md-input-container>
+				</div>
+				<div layout-gt-xs="row">
+					<md-input-container class="md-block" flex flex-gt-xs="50">
+						<label><md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'EXTENDS_TRANSACTION' | translate }}</label>
+						<md-select name="parent" id="parent" ng-model="transaction.transactionParentId" ng-change="parentChange()">
+							<md-option><em>Nenhuma</em></md-option>
+							<md-option ng-repeat="parent in transactionParents" value="{{parent.id}}">{{parent.name | translate }}</md-option>
+						</md-select>
+					</md-input-container>
+				</div>
+				<div layout-gt-xs="row">
+					<md-checkbox md-no-ink class="md-primary" ng-model="transaction.parent">{{ 'PARENT_TRANSACTION' | translate }}</md-checkbox>
+				</div>
+				</md-card-content>
+			    	</md-tab>
+				 <md-tab label="{{'INPUT_DATA' | translate }}">
+				        <md-card-content class="md-padding">
+				          <md-table-container>
+
+<!-- 				<div flex-gt-sm="50"> -->
+<!-- 		          <md-checkbox md-no-ink class="md-primary"  ng-model="data.habilitaCampoInput" -->
+<!-- 		              ng-true-value="true" -->
+<!-- 		              ng-false-value="false" ng-change="disableCopyInput()"> -->
+<!-- 		            Definir layout de input com número  de campos  igual a: -->
+<!-- 		          </md-checkbox> -->
+<!-- 		          <input type="number" name="qtdStartFieldsInput" id="qtdStartFieldsInput" ng-model="data.qtdStartFieldsInput" max-length="4" ng-disabled="!data.habilitaCampoInput" flex-gt-sm="10"/> -->
+<!-- 		        </div> -->
+
+		        <div flex-gt-sm="100">
+			        <md-checkbox md-no-ink class="md-primary"  ng-model="data.copyCampoInput"
+			              ng-true-value="true" ng-false-value="false" ng-change="clearNameTransactionInput()">
+			            Copiar layout de input da transação:
+			         </md-checkbox>
+					 <md-autocomplete flex flex-gt-xs="65"
+					 				  ng-required="data.copyCampoInput"
+					 				  ng-disabled="!data.copyCampoInput"
+					  				  md-require-match="true"
+						              md-no-cache="true"
+						              md-input-name="acTransactionFieldsInput"
+					  				  md-selected-item="transactionFieldsInput"
+						         	  md-search-text="searchTextInput"
+						         	  md-items="item in searchTransactionFields(searchTextInput)"
+						         	  md-item-text="item.name"
+						         	  md-min-length="3"
+						         	  md-floating-label="{{ 'NAME_TRANSACTION' | translate }}">
+						<md-item-template>
+							<span md-highlight-text="searchTextInput" md-highlight-flags="^i">{{item.name | translate}}</span>
+						</md-item-template>
+						<md-not-found>{{'NENHUM_REGISTRO_ENCONTRADO' | translate}}</md-not-found>
+						<div ng-if="formTransactions.acTransactionFieldsInput.$touched" ng-messages="formTransactions.acTransactionFieldsInput.$error">
+							<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+							<div ng-message="md-require-match">{{ 'MESSAGE_ERROR_TRANSACTION_NOT_FOUND' | translate }}</div>
+						</div>
+					</md-autocomplete>
+			          <!-- <input style="min-width:400px" type="text" name="transacationInputCopy" id="transacationInputCopy" ng-model="transaction.nomeCopyInput" ng-disabled="true" />
+			        		<md-icon ng-if="data.copyCampoInput" style="margin-top: -5px" md-svg-src="resources/img/icons/ic_search_24px.svg" ng-click="showModalTransaction($event, true)"></md-icon> -->
+				</div>
+				<section layout="row" layout-align="center center" layout-wrap class="section-buttons">
+				<md-button type="button" id="btnAddCampoInput" valid-disabled ng-click="inserirCampoInput()" ng-disabled="!formTransactions.$valid" class="md-raised md-primary" flex-xs='100'>
+					<md-icon md-svg-icon="resources/img/icons/plus-sign-in-a-black-circle.svg"></md-icon>
+					{{'ADD_FIELDS' | translate }}
+				</md-button>
+				<md-button type="button" ng-click="removeAllFieldsInput()" ng-disabled="transaction.inputFields.length == 0" class="md-raised md-primary" flex-xs='100'>
+					<md-icon md-svg-icon="resources/img/icons/trash-icon.svg"></md-icon>
+					{{'REMOVE_ALL_FIELDS' | translate }}
+				</md-button>
+				<md-button type="button" ng-click="createNewVersion()" ng-disabled="!transaction.multipleOutputs" class="md-raised md-primary" flex-xs='100'>
+					<md-icon md-svg-icon="resources/img/icons/ic_save_24px.svg"></md-icon>
+					{{'CREATE_NEW_VERSION' | translate }}
+				</md-button>
+			</section>
+				<label ng-if="transaction.transactionParentId != null " >
+					<i>{{'MESSAGE_EXTENDS_FIELD' | translate}}</i>
+				</label>
+
+					<table md-table md-progress="promise">
+						<thead md-head>
+							<tr md-row>
+								<th md-column hide-xs><span>{{ 'SEQUENCY' | translate }}</span></th>
+								<th md-column hide-xs><span>{{ 'NAME' | translate }} </span></th>
+								<th md-column hide-xs><span>{{ 'SIZE' | translate }}</span></th>
+								<th md-column hide-xs><span>{{ 'TYPE' | translate }}</span></th>
+								<th md-column hide-xs><span>{{ 'VALUE' | translate }}</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr md-row ng-repeat="inputField in transaction.inputFields">
+								<td md-cell hide-xs>{{inputField.ordinal}}</td>
+								<td md-cell hide-xs><input ng-disabled="inputField.parent" type="text" ng-model="inputField.name" max-length="30" required/></td>
+								<td md-cell hide-xs><input ng-disabled="inputField.parent" type="number" ng-model="inputField.size" ng-blur="somaByteInput()" min="1" max="999" maxlength="3" required/></td>
+								<td md-cell hide-xs>
+									<md-select ng-disabled = "inputField.parent" name="type" id="type" ng-model="inputField.fieldTypeId">
+										<md-option ng-repeat="type in fieldsTypes" value="{{type.id}}">{{type.name | translate }}</md-option>
+									</md-select>
+								</td>
+								<td md-cell hide-xs>
+									<input ng-disabled = "inputField.parent" type="text" name="value" id="value" ng-model="inputField.value" maxlength="{{inputField.size}}"/>
+								</td>
+							    <td md-cell hide-xs>
+				                	<div layout="row" layout-xs="column">
+				                	    <md-button ng-disabled = "inputField.parent || !formTransactions.$valid" class="md-icon-button" ng-click="inserirCampoAcimaInput(inputField.ordinal)" title="Inserir Campo Acima">
+					                		<md-icon md-svg-icon="resources/img/icons/arrow-circle-o-up.svg"></md-icon>
+					                	</md-button>
+				                		<md-button ng-disabled = "inputField.parent || !formTransactions.$valid" class="md-icon-button" ng-click="inserirCampoAbaixoInput(inputField.ordinal)" title="Inserir Campo Abaixo">
+					                		<md-icon md-svg-icon="resources/img/icons/arrow-circle-o-down.svg"></md-icon>
+					                	</md-button>
+					                	<md-button  ng-disabled = "inputField.parent" class="md-icon-button" ng-click="removeInput(inputField.ordinal)" title="Excuir">
+					                		<md-icon md-svg-icon="resources/img/icons/trash-icon-black.svg">
+					                	</md-button>
+				                	</div>
+				                </td>
+							</tr>
+			            </tbody>
+					</table>
+					<md-divider style="margin-bottom: 10px;"></md-divider>
+					<label>{{ 'LABEL_QUANTITY_OF_INPUT_BYTES' | translate }}<b>{{transaction.qtdBytesInput}}</b></label>
+					<md-divider style="margin-top: 10px;"></md-divider>
+					</md-table-container>
+				        </md-card-content>
+				      </md-tab>
+				 <md-tab label="{{'OUTPUT_DATA' | translate }}" ng-disabled="transaction.parent">
+				        <md-card-content class="md-padding">
+				         <md-table-container>
+
+<!-- 				<div flex-gt-sm="50"> -->
+<!-- 		          <md-checkbox md-no-ink class="md-primary"  ng-model="data.habilitaCampoOutput" -->
+<!-- 		              ng-true-value="true" -->
+<!-- 		              ng-false-value="false" ng-change="disableCopyOutput()"> -->
+<!-- 		            Definir layout de output com número  de campos  igual a: -->
+<!-- 		          </md-checkbox> -->
+<!-- 		          <input type="number" name="qtdStartFieldsOutput" id="qtdStartFieldsOutput" ng-model="data.qtdStartFieldsOutput" max-length="4" ng-disabled="!data.habilitaCampoOutput" flex-gt-sm="10"/> -->
+<!-- 		        </div> -->
+
+	          	<div layout-gt-xs="row">
+					<md-input-container class="md-block" flex flex-gt-xs="50">
+						<label>{{ 'DESCRIPTION_LAYOUT_OUTPUT_TRANSACTION' | translate }}</label>
+						<input type="text" name="transactionOutputDescription" id="transactionOutputDescription"
+						       ng-model="transaction.transactionOutputDescription" max-length="60" ng-maxlength="60"/>
+						<div ng-if="formTransactions.transactionOutputDescription.$touched" ng-messages="formTransactions.description.$error">
+							<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+							<div ng-message="maxlength">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate: {maxlength= "60"  }'}}></div>
+							<div ng-message="pattern">{{ 'MESSAGE_ERROR_PATTERN_NUMBER' | translate }}</div>
+						</div>
+					</md-input-container>
+			  	</div>
+
+		        <div flex-gt-sm="100">
+		          <md-checkbox md-no-ink class="md-primary"  ng-model="data.copyCampoOutput"
+		              ng-true-value="true" ng-false-value="false" ng-change="clearNameTransactionOutput()">
+		            Copiar layout de output da transação:
+		          </md-checkbox>
+		          <md-autocomplete flex flex-gt-xs="65"
+		          				   ng-disabled="!data.copyCampoOutput"
+		          				   ng-required="data.copyCampoOutput"
+					  			   md-require-match="true"
+						           md-no-cache="true"
+						           md-input-name="acTransactionFieldsOutput"
+					  			   md-selected-item="transactionFieldsOutput"
+						           md-search-text="searchTextOutput"
+						           md-items="item in searchTransactionFields(searchTextOutput)"
+						           md-item-text="item.name"
+						           md-min-length="3"
+						           md-floating-label="{{ 'NAME_TRANSACTION' | translate }}">
+						<md-item-template>
+							<span md-highlight-text="searchTextOutput" md-highlight-flags="^i">{{item.name | translate}}</span>
+						</md-item-template>
+						<md-not-found>{{'NENHUM_REGISTRO_ENCONTRADO' | translate}}</md-not-found>
+						<div ng-if="formTransactions.acTransactionFieldsOutput.$touched" ng-messages="formTransactions.acTransactionFieldsOutput.$error">
+							<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+							<div ng-message="md-require-match">{{ 'MESSAGE_ERROR_TRANSACTION_NOT_FOUND' | translate }}</div>
+						</div>
+					</md-autocomplete>
+		          <!-- <input style="min-width:400px" type="text" name="transacationInputCopy" id="transacationInputCopy" ng-model="transaction.nomeCopyInput" ng-disabled="true" />
+		        		<md-icon ng-if="data.copyCampoInput" style="margin-top: -5px" md-svg-src="resources/img/icons/ic_search_24px.svg" ng-click="showModalTransaction($event, true)"></md-icon> -->
+				</div>
+        		<section layout="row" layout-align="center center" layout-wrap class="section-buttons">
+				<md-button type="button" valid-disabled ng-click="inserirCampoOutput()" ng-disabled="!formTransactions.$valid" class="md-raised md-primary" flex-xs='100'>
+					<md-icon md-svg-icon="resources/img/icons/plus-sign-in-a-black-circle.svg"></md-icon>
+					{{'ADD_FIELDS' | translate }}
+				</md-button>
+				<md-button type="button" ng-click="removeAllFieldsOutput()" ng-disabled="transaction.outputFields.length == 0" class="md-raised md-primary" flex-xs='100'>
+					<md-icon md-svg-icon="resources/img/icons/trash-icon.svg"></md-icon>
+					{{'REMOVE_ALL_FIELDS' | translate }}
+				</md-button>
+			</section>
+					<table md-table md-progress="promise">
+						<thead md-head>
+							<tr md-row>
+								<th md-column hide-xs><span>{{ 'SEQUENCY' | translate }}</span></th>
+								<th md-column hide-xs><span>{{ 'NAME' | translate }} </span></th>
+								<th md-column hide-xs><span>{{ 'SIZE' | translate }}</span></th>
+								<th md-column hide-xs><span>{{ 'TYPE' | translate }}</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr md-row ng-repeat="outputFields in transaction.outputFields" >
+								<td md-cell hide-xs>{{outputFields.ordinal}}</td>
+								<td md-cell hide-xs><input type="text" ng-model="outputFields.name" maxlength="30" ng-maxlength="30" required/></td>
+								<td md-cell hide-xs><input type="number" maxlength="3" ng-model="outputFields.size" ng-blur="somaByteOutput()"  min="1" max="999" required/></td>
+								<td md-cell hide-xs>
+									<md-select name="type" id="type" ng-model="outputFields.fieldTypeId">
+										<md-option ng-repeat="type in fieldsTypes" value="{{type.id}}">{{type.name | translate }}</md-option>
+									</md-select>
+								</td>
+					            <td md-cell>
+				                	<div layout-align="end center" layout="row" layout-xs="column">
+				                		<md-button class="md-icon-button" ng-click="inserirCampoAcimaOutput(outputFields.ordinal)" ng-disabled="!formTransactions.$valid" title="Inserir Campo Acima">
+					                		<md-icon md-svg-icon="resources/img/icons/arrow-circle-o-up.svg"></md-icon>
+					                	</md-button>
+				                		<md-button class="md-icon-button" ng-click="inserirCampoAbaixoOutput(outputFields.ordinal)" ng-disabled="!formTransactions.$valid" title="Inserir Campo Abaixo">
+					                		<md-icon md-svg-icon="resources/img/icons/arrow-circle-o-down.svg"></md-icon>
+					                	</md-button>
+					                	<md-button class="md-icon-button" ng-click="removeOutput(outputFields.ordinal)" title="Excluir">
+					                		<md-icon md-svg-icon="resources/img/icons/trash-icon-black.svg">
+					                	</md-button>
+				                	</div>
+				                </td>
+							</tr>
+			            </tbody>
+					</table>
+					 <md-divider style="margin-bottom: 10px;"></md-divider>
+					 <label>{{ 'LABEL_QUANTITY_OF_OUTPUT_BYTES' | translate }}<b>{{transaction.qtdBytesOutput}}</b></label>
+					 <md-divider style="margin-top: 10px;"></md-divider>
+				</md-table-container>
+				        </md-card-content>
+				      </md-tab>
+			 </md-tabs>
+			</md-card-content>
+			<section layout="row" layout-align="center center" layout-wrap class="section-buttons">
+				<md-button type="button" ng-click="clearFields()" class="md-raised md-primary" flex-xs='100'>
+					<md-icon md-svg-icon="resources/img/icons/ic_clear_24px.svg"></md-icon>
+					{{'CLEAR' | translate }}
+				</md-button>
+				<md-button type="button" ng-click="search()" class="md-raised md-primary" flex-xs='100' >
+					<md-icon md-svg-icon="resources/img/icons/ic_search_24px.svg"></md-icon>
+					{{'SEARCH' | translate }}
+				</md-button>
+				<md-button type="submit" id="btnSave" ng-disabled="!formTransactions.$valid" valid-disabled class="md-raised md-primary" flex-xs='100'>
+					<md-icon md-svg-icon="resources/img/icons/ic_save_24px.svg" ></md-icon>
+					{{'SAVE' | translate }}
+				</md-button>
+			</section>
+		</md-card>
+		<md-card class="no-margin card-grid">
+			<md-card-content class="md-padding" layout="column" layout-align="center">
+				<p>{{ 'SEARCH_FIELDS' | translate }}</p>
+				<md-table-container>
+					<table md-table md-progress="promise">
+						<thead md-head>
+							<tr md-row>
+								<th md-column hide-xs><span>{{ 'NAME_TRANSACTION' | translate }} </span></th>
+								<th md-column hide-xs><span>{{ 'DESCRIPTION' | translate }}</span></th>
+								<th md-column hide-xs><span>{{ 'FORMAT_FIELDS' | translate }}</span></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr md-row ng-repeat="t in transactions" >
+								<td md-cell hide-xs>{{t.name}}</td>
+								<td md-cell hide-xs>{{t.description}}</td>
+								<td md-cell hide-xs>{{t.transactionEncodingName}}</td>
+				                <td md-cell>
+				                	<div layout-align="end center" layout="row" layout-xs="column">
+				                		<md-button title="Editar" class="md-icon-button" ng-click="edit(t.id, t.transactionOutputId)">
+					                		<md-icon md-svg-icon="resources/img/icons/ic_mode_edit_24px.svg"></md-icon>
+					                	</md-button>
+					                	<md-button title="Excluir" class="md-icon-button" ng-click="deleteTransaction($event, t.id)">
+						                	<md-icon md-svg-icon="resources/img/icons/trash-icon-black.svg"></md-icon>
+					                	</md-button>
+				                	</div>
+				                </td>
+							</tr>
+			            </tbody>
+					</table>
+				</md-table-container>
+				<md-table-pagination md-limit="optionTable.limit" md-page="page" md-total="{{totalRegisters}}"
+					md-page-select="optionTable.pageSelect" md-boundary-links="optionTable.boundaryLinks" md-label="{{labelPagination}}" md-on-paginate="searchPage">
+				</md-table-pagination>
+			</md-card-content>
+		</md-card>
+	</div>
+</md-content>
+</form>

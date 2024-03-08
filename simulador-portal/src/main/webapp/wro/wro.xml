@@ -1,0 +1,36 @@
+<groups xmlns="http://www.isdc.ro/wro">
+
+	<group name="wro-angularjs">
+		<js>webjar:angularjs/1.5.5/angular.min.js</js>
+	    <js>webjar:angularjs/1.5.5/angular-route.min.js</js>
+	    <js>webjar:angularjs/1.5.5/angular-cookies.min.js</js>
+	    <js>webjar:angularjs/1.5.5/angular-messages.min.js</js>
+	    <js>webjar:angularjs/1.5.5/angular-aria.min.js</js>
+	    <js>webjar:angularjs/1.5.5/angular-animate.min.js</js>
+	    <js>webjar:angular-ui-router/0.2.18/angular-ui-router.js</js>
+	    <js>webjar:angular-growl-2/0.7.3/angular-growl.js</js>
+	    <js>/template/js/angular/angular-translate.min.js</js>
+	    <js>/template/js/angular/angular-translate-loader-static-files.min.js</js>
+	    <js>/template/js/angular/angular-md5.min.js</js>
+	    
+   </group>
+      
+   <group name="simulador-application">
+		<css>/resources/css/**.css</css>
+		<js>/resources/js/**.js</js>
+   </group>
+   
+     <group name="wro-momentjs">
+	    <js>webjar:momentjs/2.18.1/moment.js</js>
+   </group>
+   
+  <group name="wro-jquery">
+	    <js>webjar:jquery/2.2.3/jquery.min.js</js>
+   </group>
+   
+   <group name="wro-md-data-table">
+   		<css>/template/css/md-data-table/md-data-table.min.css</css>
+	    <js>/template/js/md-data-table/md-data-table.min.js</js>
+   </group>
+
+</groups>

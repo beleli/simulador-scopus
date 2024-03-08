@@ -1,0 +1,102 @@
+<form class="form" name="formTestScenario" novalidate ng-submit="save()">
+	<md-content style="overflow: visible">
+		<div>
+			<md-card class="no-margin">
+				<md-toolbar>
+					<div class="md-toolbar-tools">
+						<h2>{{ 'MENU_TEST_SCENARIO' | translate }}</h2>
+						<span flex></span>
+					</div>
+		   		</md-toolbar>
+				<md-card-content class="md-padding layout-align-center-stretch" layout-get-xs="column" layout-align="center">
+					<div layout="row" layout-align="end end">
+						<div layout-align="end" class="text-font-12">
+							<md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'LBL_FIELDS_SEARCH' | translate }}
+						</div>
+					</div>
+					<div layout-gt-xs="row">
+				  	  	<md-autocomplete flex flex flex-gt-xs="50"
+				  	  					 required 
+				  	  					 md-require-match="true"
+					  	                 md-no-cache="true"
+					  	                 md-input-name="acTransaction"
+					    				 md-selected-item="transaction"
+								         md-search-text="searchText"
+								         md-items="item in searchTransaction(searchText)"
+								         md-item-text="item.name"
+								         md-min-length="3"
+								         md-floating-label="{{ 'NAME_TRANSACTION' | translate }}"
+								         append-icon="resources/img/icons/ic_search_24px.svg"
+								         md-selected-item-change="changeTransaction(transaction.id)">
+							<md-item-template>
+								<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.name | translate}}</span>
+							</md-item-template>
+							<md-not-found> {{'NENHUM_REGISTRO_ENCONTRADO' | translate}} </md-not-found>
+							<div ng-if="formTestScenario.acTransaction.$touched" ng-messages="formTestScenario.acTransaction.$error">
+								<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+								<div ng-message="md-require-match">{{ 'MESSAGE_ERROR_TRANSACTION_NOT_FOUND' | translate }}</div>
+							</div>
+					    </md-autocomplete>
+					</div>
+					<div layout-gt-xs="row">
+						<md-input-container class="md-block" flex>
+							<label><md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'DESCRIPTION' | translate }}</label>
+							<input type="text" name="description" id="description" ng-model="testScenario.description" ng-maxlength="60" max-length="60" required/>
+							<div ng-if="formTestScenario.description.$touched" ng-messages="formTestScenario.description.$error">
+								<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+								<div ng-message="maxlength">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate: {maxlength= "60"  }'}}></div>
+							</div>
+						</md-input-container>
+					</div>
+					<section layout="row" layout-align="center center" layout-wrap class="section-buttons">
+					<md-button type="button" ng-click="clearFields()" class="md-raised md-primary" flex-xs='100'>
+						<md-icon md-svg-icon="resources/img/icons/ic_clear_24px.svg"></md-icon>{{'CLEAR' | translate }}
+					</md-button>
+					<md-button type="button" ng-click="search()" class="md-raised md-primary" flex-xs='100'>
+						<md-icon md-svg-icon="resources/img/icons/ic_search_24px.svg"></md-icon>{{'SEARCH' | translate }}
+					</md-button>
+					<md-button type="submit" ng-disabled="!formTestScenario.$valid" class="md-raised md-primary" flex-xs='100'>
+						<md-icon md-svg-icon="resources/img/icons/ic_save_24px.svg"></md-icon>{{'SAVE' | translate }}
+					</md-button>
+				</section>
+			</md-card>
+			<md-card class="no-margin card-grid">
+			    <md-card-content class="md-padding" layout="column" layout-align="center">
+			    	<md-table-container>
+			    		<table md-table md-progress="promise">
+				            <thead md-head>
+				            	<tr md-row>
+				                	<th md-column hide-xs><span>{{ 'DESCRIPTION' | translate }}</span></th>
+				                	<th md-column hide-xs><span>{{ 'NAME_TRANSACTION' | translate }}</span></th>
+				                	<th md-column hide-xs><span>{{ 'TYPE_TRANSACTION' | translate }}</span></th>
+				                	<th md-column class="th-action"></th>
+			              		</tr>
+				            </thead>
+				            <tbody md-body>
+				             	<tr md-row ng-repeat="testScenario in testScenarios" >
+				                	<td md-cell hide-xs>{{testScenario.description}}</td>
+				                	<td md-cell hide-xs>{{testScenario.transactionName}}</td>
+				                	<td md-cell hide-xs>{{testScenario.transactionTypeName}}</td>
+				                	<td md-cell>
+					                	<div layout-align="end center" layout="row" layout-xs="column">
+					                		<md-button title="Editar" class="md-icon-button" ng-click="edit(testScenario.id)">
+						                		<md-icon md-svg-icon="resources/img/icons/ic_mode_edit_24px.svg"></md-icon>
+						                	</md-button>
+					                		<md-button title="Excluir" class="md-icon-button" ng-click="deleteTest($event,testScenario.id)">
+						                		<md-icon md-svg-icon="resources/img/icons/trash-icon-black.svg"></md-icon>
+						                	</md-button>
+					                	</div>
+				                	</td>
+				              	</tr>
+				            </tbody>
+	          			</table>
+					</md-table-container>
+					<md-table-pagination md-limit="optionTable.limit" md-page="page" md-total="{{totalRegisters}}"
+						md-page-select="optionTable.pageSelect" md-boundary-links="optionTable.boundaryLinks"
+						md-label="{{labelPagination}}" md-on-paginate="searchPage">
+					</md-table-pagination>
+			    </md-card-content>
+			</md-card>
+		</div>
+	</md-content>
+</form>

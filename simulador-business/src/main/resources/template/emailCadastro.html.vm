@@ -1,0 +1,17 @@
+<html>
+	<body>
+		
+		<h3>
+			Bem vindo!
+		<br>
+			Segue senha para primeiro acesso:
+		</h3>
+		<h2>
+			${novaSenha}
+		</p>
+		
+		</h2>
+		
+	</body>
+ 
+</html>

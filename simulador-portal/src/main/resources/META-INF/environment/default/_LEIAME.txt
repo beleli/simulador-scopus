@@ -1,0 +1,2 @@
+As configurações desse ambiente são geradas dinamicamente ao realizar um build pelo maven. 
+Os arquivos que estão no diretório src/config são preenchidos de acordo com o profile maven e copiados para esse environment.

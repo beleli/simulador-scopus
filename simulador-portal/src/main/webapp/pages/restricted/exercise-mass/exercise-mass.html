@@ -1,0 +1,208 @@
+<form class="form" name="formExerciseMass" novalidate ng-submit="execute()">
+	<md-content style="overflow: visible">
+		<div>
+			<md-card class="no-margin">
+				<md-toolbar>
+					<div class="md-toolbar-tools">
+						<h2>{{ 'MENU_EXERCISE_MASS' | translate }}</h2>
+						<span flex></span>
+					</div>
+		   		</md-toolbar>
+		   		<md-card-content class="md-padding layout-align-center-stretch" layout-get-xs="column" layout-align="center">
+					<md-tabs md-dynamic-height md-border-bottom md-selected="selectedTabIndex">
+				 		<md-tab label="{{'CONFIGURATIONS' | translate }}">
+				 			<md-card-content class="md-padding layout-align-center-stretch">
+						 		<div layout="row" layout-align="end end">
+									<div layout-align="end" class="text-font-12">
+										<md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'LBL_FIELDS_SEARCH' | translate }}
+									</div>
+								</div>
+		 						<div layout-gt-xs="row">
+			 						<md-autocomplete flex flex-gt-xs="50"
+							  	  					 required
+							  	  					 md-require-match="true"
+								  	                 md-no-cache="true"
+								  	                 md-input-name="acTransaction"
+								    				 md-selected-item="transaction"
+											         md-search-text="searchText"
+											         md-items="item in searchTransaction(searchText)"
+											         md-item-text="item.name"
+											         md-min-length="3"
+											         md-floating-label="{{ 'NAME_TRANSACTION' | translate }}"
+											         append-icon="resources/img/icons/ic_search_24px.svg"
+											         md-selected-item-change="changeTransactionFields(transaction.id)">
+										<md-item-template>
+											<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.name | translate}}</span>
+										</md-item-template>
+										<md-not-found>{{'NENHUM_REGISTRO_ENCONTRADO' | translate}}</md-not-found>
+										<div ng-if="formExerciseMass.acTransaction.$touched" ng-messages="formExerciseMass.acTransaction.$error">
+											<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+											<div ng-message="md-require-match">{{ 'MESSAGE_ERROR_TRANSACTION_NOT_FOUND' | translate }}</div>
+										</div>
+									</md-autocomplete>
+							  	</div>
+							  	<div layout-gt-xs="row">
+									<md-input-container class="md-block" flex flex-gt-xs="50">
+										<label for="transactionRouter">{{ 'USE_TRANSACTION_ROUTER' | translate }}</label>
+										<md-select name="transactionRouter" id="transactionRouter" ng-model="exerciseMass.transactionRouterId" ng-change="routerChange()">
+											<md-option><em>{{ 'NONE' | translate }}</em></md-option>
+											<md-option ng-repeat="t in transactionRouters" value="{{t.id}}">{{t.name}}</md-option>
+										</md-select>
+									</md-input-container>
+								</div>
+								<div layout-gt-xs="row">
+									<md-input-container class="md-block" flex flex-gt-xs="50">
+										<label for="transactionMechanism">{{ 'TRANSACTION_MECHANISM' | translate }}</label>
+										<md-select name="transactionMechanism" id="transactionMechanism" ng-model="exerciseMass.transactionMechanismId">
+											<md-option ng-repeat="t in transactionMechanisms" value="{{t.id}}">{{t.name}}</md-option>
+										</md-select>
+									</md-input-container>
+									<div flex="5" hide-xs/>
+									<md-input-container class="md-block" flex flex-gt-xs>
+										<label for="service">{{ 'SERVICE' | translate }}</label>
+										<input type="text" name="service" id="service" ng-model="exerciseMass.service" maxlength="2" required>
+										<div ng-if="formExerciseMass.service.$touched" ng-messages="formExerciseMass.service.$error">
+											<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+											<div ng-message="maxlength">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate: {maxlength = "2"}'' }}</div>
+										</div>
+									</md-input-container>
+									<div flex="5" hide-xs ng-if="exerciseMass.transactionMechanismId > 1"></div>
+									<md-input-container class="md-block" flex flex-gt-xs ng-if="exerciseMass.transactionMechanismId > 1">
+										<label for="cics">{{ 'CICS_NAME' | translate }}</label>
+										<input type="text" name="cics" id="cics" ng-model="exerciseMass.cics" ng-maxlength="8" maxlength="8">
+									</md-input-container>
+								</div>
+								<div layout-gt-xs="row">
+									<md-input-container class="md-block" flex flex-gt-xs>
+										<md-checkbox name="securityHeader" id="securityHeader" ng-model="exerciseMass.securityHeader" class="md-primary">
+										{{ 'USE_SECURITY_HEADER' | translate }}
+										</md-checkbox>
+									</md-input-container>
+									<div flex="5" hide-xs/>
+									<md-input-container class="md-block" flex flex-gt-xs>
+										<label for="user">{{ 'USER' | translate }}</label>
+										<input type="text" name="user" id="user" ng-model="exerciseMass.user" ng-maxlength="7" maxlength="7"
+											ng-required="exerciseMass.securityHeader" ng-disabled="!exerciseMass.securityHeader">
+										<div ng-if="formExerciseMass.user.$touched" ng-messages="formExerciseMass.user.$error">
+											<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+											<div ng-message="maxlength">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate: {maxlength = "7"}'' }}</div>
+										</div>
+									</md-input-container>
+									<div flex="5" hide-xs/>
+									<md-input-container class="md-block" flex flex-gt-xs>
+										<label for="password">{{ 'PASSWORD' | translate }}</label>
+										<input type="text" name="password" id="password" ng-model="exerciseMass.password" ng-maxlength="8" maxlength="8"
+											ng-required="exerciseMass.securityHeader" ng-disabled="!exerciseMass.securityHeader">
+										<div ng-if="formExerciseMass.password.$touched" ng-messages="formExerciseMass.password.$error">
+											<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+											<div ng-message="maxlength">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate: {maxlength = "8"}'' }}</div>
+										</div>
+									</md-input-container>
+								</div>
+							</md-card-content>
+				 		</md-tab>
+				 		<md-tab label="{{'INPUT_DATA' | translate }}">
+				 			<md-card-content class="md-padding layout-align-center-stretch">
+					 			<div ng-if="exerciseMass.transactionRouterId > 0">
+						 			<md-divider style="margin-bottom: 10px;"></md-divider>
+									<label>{{ 'USE_TRANSACTION_ROUTER' | translate }}</label>
+									<md-divider style="margin-top: 10px;"></md-divider>
+									<table md-table md-progress="promise">
+										<thead md-head>
+											<tr md-row>
+												<th md-column hide-xs><span>{{ 'SEQUENCY' | translate }}</span></th>
+												<th md-column hide-xs><span>{{ 'NAME' | translate }} </span></th>
+												<th md-column hide-xs><span>{{ 'SIZE' | translate }}</span></th>
+												<th md-column hide-xs><span>{{ 'TYPE' | translate }}</span></th>
+												<th md-column hide-xs><span>{{ 'VALUE' | translate }}</span></th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr md-row ng-repeat="router in exerciseMass.routerInputList" style="height: 40px;">
+												<td md-cell hide-xs>{{router.ordinal}}</td>
+												<td md-cell hide-xs>{{router.name}}</td>
+												<td md-cell hide-xs>{{router.size}}</td>
+												<td md-cell hide-xs>{{router.type}}</td>
+												<td md-cell hide-xs>
+													<input type="text" ng-model="router.value" maxlength="{{router.size}}" ng-disabled="router.readyOnly"/>
+												</td>
+											</tr>
+							            </tbody>
+									</table>
+									<md-divider style="margin-bottom: 10px;"></md-divider>
+									<label>{{ 'LABEL_QUANTITY_OF_INPUT_BYTES' | translate }}<b>{{bytesRouterInput}}</b></label>
+									<md-divider style="margin-top: 10px;"></md-divider>
+					 			</div>
+					 			<md-divider style="margin-bottom: 10px;"></md-divider>
+								<label>{{ 'TRANSACTION' | translate }}<b>{{transaction.name}}</b></label>
+								<md-divider style="margin-top: 10px;"></md-divider>
+						 		<table md-table md-progress="promise">
+									<thead md-head>
+										<tr md-row>
+											<th md-column hide-xs><span>{{ 'SEQUENCY' | translate }}</span></th>
+											<th md-column hide-xs><span>{{ 'NAME' | translate }} </span></th>
+											<th md-column hide-xs><span>{{ 'SIZE' | translate }}</span></th>
+											<th md-column hide-xs><span>{{ 'TYPE' | translate }}</span></th>
+											<th md-column hide-xs><span>{{ 'VALUE' | translate }}</span></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr md-row ng-repeat="input in exerciseMass.inputList" style="height: 40px;">
+											<td md-cell hide-xs>{{input.ordinal}}</td>
+											<td md-cell hide-xs>{{input.name}}</td>
+											<td md-cell hide-xs>{{input.size}}</td>
+											<td md-cell hide-xs>{{input.type}}</td>
+											<td md-cell hide-xs>
+												<input type="text" ng-model="input.value" maxlength="{{input.size}}" ng-disabled="input.readyOnly"/>
+											</td>
+										</tr>
+						            </tbody>
+								</table>
+								<md-divider style="margin-bottom: 10px;"></md-divider>
+								<label>{{ 'LABEL_QUANTITY_OF_INPUT_BYTES' | translate }}<b>{{bytesInput}}</b></label>
+								<md-divider style="margin-top: 10px;"></md-divider>
+							</md-card-content>
+				 		</md-tab>
+				 		<md-tab label="{{'OUTPUT_DATA' | translate }}">
+				 			<md-card-content class="md-padding">
+						 		<table id="outputTable" name="outputTable" md-table md-progress="promise">
+									<thead md-head>
+										<tr md-row>
+											<th md-column hide-xs><span>{{ 'SEQUENCY' | translate }}</span></th>
+											<th md-column hide-xs><span>{{ 'NAME' | translate }} </span></th>
+											<th md-column hide-xs><span>{{ 'SIZE' | translate }}</span></th>
+											<th md-column hide-xs><span>{{ 'TYPE' | translate }}</span></th>
+											<th md-column hide-xs><span>{{ 'VALUE' | translate }}</span></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr md-row ng-repeat="output in exerciseMass.outputList" style="height: 40px;">
+											<td md-cell hide-xs>{{output.ordinal}}</td>
+											<td md-cell hide-xs>{{output.name}}</td>
+											<td md-cell hide-xs>{{output.size}}</td>
+											<td md-cell hide-xs>{{output.type}}</td>
+											<td md-cell hide-xs>
+												<input ng-disabled="true" type="text" ng-model="output.value"/>
+											</td>
+										</tr>
+						            </tbody>
+								</table>
+								<md-divider style="margin-bottom: 10px;"></md-divider>
+						 		<label>{{'LABEL_QUANTITY_OF_OUTPUT_BYTES' | translate}}<b>{{bytesOutput}}</b></label>
+								<md-divider style="margin-top: 10px;"></md-divider>
+							</md-card-content>
+				 		</md-tab>
+				 	</md-tabs>
+				 	<section layout="row" layout-align="center center" layout-wrap class="section-buttons">
+						<md-button type="button" ng-click="clearFields()" class="md-raised md-primary" flex-xs='100'>
+							<md-icon md-svg-icon="resources/img/icons/ic_clear_24px.svg"/>{{'CLEAR' | translate }}
+						</md-button>
+						<md-button type="submit" id="btnSave" ng-disabled="!formExerciseMass.$valid" valid-disabled class="md-raised md-primary" flex-xs='100'>
+							<md-icon md-svg-icon="resources/img/icons/ic_save_24px.svg"/>{{'EXECUTE' | translate }}
+						</md-button>
+					</section>
+				</md-card-content>
+			</md-card>
+		</div>
+	</md-content>
+</form>

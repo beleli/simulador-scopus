@@ -1,0 +1,142 @@
+<form class="form"  name="formProjects" novalidate ng-submit="save()">
+	<md-content style="overflow: visible">
+		<div>
+			<md-card class="no-margin">
+				<md-toolbar>
+			      <div class="md-toolbar-tools">
+			        <h2>{{ 'MENU_PROJECTS' | translate }}</h2>
+			        <span flex></span>
+			      </div>
+			    </md-toolbar>
+			    <md-card-content class="md-padding layout-align-center-stretch" layout-gt-xs="column" layout-align="center">
+			    	<div layout="row" layout-align="end end">
+				    	<div layout-align="end" class="text-font-12">
+				    		<md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'LBL_FIELDS_SEARCH' | translate }}
+				    	</div>
+			    	</div>
+				    <div layout-gt-xs="row">
+					    <md-input-container class="md-block" flex flex-gt-xs>
+					        <label><md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'CODE_PROJECT' | translate }}</label>
+					        <input type="text" name="code" id="code" ng-model="project.code" maxlength="32" required>
+					        <div ng-if="formProjects.code.$touched" ng-messages="formProjects.code.$error">
+					        	<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+					        	<div ng-message="maxlength">{{ 'MESSAGE_ERROR_MAX_LENGTH' | translate:'{ maxlength: "32" }' }}</div>
+					        	<div ng-message="pattern">{{ 'MESSAGE_ERROR_PATTERN_NUMBER' | translate }}</div>
+					        </div>
+					    </md-input-container>
+					    <div flex="5" hide-xs />
+	 			        <md-input-container class="md-block" flex flex-gt-xs>
+					        <label for="beginDate">{{ 'DATE_BEGIN' | translate }}</label>
+					        <md-datepicker id="beginDate" name="beginDate" ng-model="project.beginDate" required></md-datepicker>
+					        <div ng-if="formProjects.beginDate.$touched" ng-messages="formProjects.beginDate.$error">
+					        	<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+					        </div>
+					    </md-input-container>
+				        <div flex="5" hide-xs />
+				        <md-input-container class="md-block" flex flex-gt-xs>
+					        <label for="endDate">{{ 'DATE_END' | translate }}</label>
+					        <md-datepicker id="endDate" name="endDate" ng-model="project.endDate" required></md-datepicker>
+					        <div ng-if="formProjects.endDate.$touched" ng-messages="formProjects.endDate.$error">
+					        	<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+					        </div>
+					     </md-input-container>
+			        </div>
+				    <div layout-gt-xs="row">
+				         <md-input-container class="md-block" flex flex-gt-xs>
+				         	<label><md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'DESCRIPTION_PROJECT' | translate }}</label>
+				         	<input type="text" name="description" id="description" ng-model="project.description" maxlength="256">
+					        <div ng-if="formProjects.description.$touched" ng-messages="formProjects.description.$error">
+					        	<div ng-message="maxlength">{{ 'MESSAGE_ERROR_MAX_LENGTH' | translate:'{ maxlength: "256" }' }}</div>
+					        </div>
+					    </md-input-container>
+					</div>
+					<div layout-gt-xs="row">
+						<md-input-container class="md-block" flex flex-gt-xs>
+							<p>Usuarios associados ao projeto</p>
+							<md-list ng-cloak>
+						    	<md-list-item class="secondary-button-padding">
+								  	<div layout-gt-xs="row" class="md-block" flex flex-gt-xs="50">
+									  	<md-autocomplete flex 
+									  	                 md-no-cache="true" 
+									  	                 md-require-match="true"
+									    				 md-selected-item="projectUser"
+												         md-search-text="searchText"
+												         md-items="item in searchComboUsers(searchText)"
+												         md-item-text="item.name"
+												         md-min-length="3"
+												         md-floating-label="{{ 'USER' | translate }}">
+											<md-item-template>
+												<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.name | translate}}</span>
+											</md-item-template>
+											<md-not-found>{{'NENHUM_REGISTRO_ENCONTRADO' | translate}}</md-not-found>
+									    </md-autocomplete>
+									    <section layout="row" layout-align="center center" layout-wrap class="section-buttons">
+									    <md-button type="button" class="md-raised md-primary" ng-click="addUser(projectUser, $event)" flex-xs='100' style="margin-bottom: 20px;"><md-icon md-svg-icon="resources/img/icons/add-user.svg"></md-icon>Adicionar</md-button>
+								      </section>
+								    </div>
+								  </md-list-item>
+								  <md-list-item ng-repeat="user in project.users" class="secondary-button-padding" flex flex-gt-xs="50">
+								  		<div layout-gt-xs="row" class="md-block" flex flex-gt-xs="50">{{user.name}}</div>
+								    <md-button type="button" class="md-secondary" ng-click="removeUser(user, $event)"><md-icon md-svg-icon="resources/img/icons/trash-icon-black.svg"></md-button>
+								   <md-divider></md-divider>
+								  </md-list-item>
+						  	</md-list>
+					  	</md-input-container>
+					</div>
+			    </md-card-content>
+			    <section layout="row" layout-align="center center" layout-wrap class="section-buttons">
+		    		<md-button type="button" ng-click="clearFields()" class="md-raised md-primary" flex-xs='100'>
+	              		<md-icon md-svg-icon="resources/img/icons/ic_clear_24px.svg"></md-icon>
+	              		{{ 'CLEAR' | translate }}
+	              	</md-button>
+	                <md-button type="button" ng-click="search()" class="md-raised md-primary" flex-xs='100'>
+	               		<md-icon md-svg-icon="resources/img/icons/ic_search_24px.svg"></md-icon>
+	               		{{ 'SEARCH' | translate }}
+	               	</md-button>
+	                <md-button type="submit" ng-disabled="!formProjects.$valid" class="md-raised md-primary" flex-xs='100'>
+	               		<md-icon md-svg-icon="resources/img/icons/ic_save_24px.svg"></md-icon>
+	               		{{ 'SAVE' | translate }}
+	               	</md-button>
+	            </section>
+			</md-card>
+			<md-card class="no-margin card-grid">
+			    <md-card-content class="md-padding" layout="column" layout-align="center">
+			    	<md-table-container>
+			    		<table md-table md-progress="promise">
+				            <thead md-head>
+				              <tr md-row>
+				                <th md-column hide-xs><span>{{ 'CODE_PROJECT' | translate }}</span></th>
+				                <th md-column hide-xs><span>{{ 'DESCRIPTION_PROJECT' | translate }}</span></th>
+				                <th md-column hide-xs><span>{{ 'DATE_BEGIN' | translate }}</span></th>
+				                <th md-column hide-xs><span>{{ 'DATE_END' | translate }}</span></th>	
+				                <th md-column class="th-action"></th>
+				              </tr>
+				            </thead>
+				            <tbody md-body>
+				              <tr md-row ng-repeat="project in projects" >
+				                <td md-cell hide-xs>{{project.code}}</td>
+				                <td md-cell hide-xs>{{project.description}}</td>
+				                <td md-cell hide-xs>{{project.beginDate | date: "dd/MM/yyyy"}}</td>
+				                <td md-cell hide-xs>{{project.endDate | date: "dd/MM/yyyy"}}</td>
+				                <td md-cell>
+				                	<div layout-align="end center" layout="row" layout-xs="column">
+				                		<md-button class="md-icon-button" title="Editar" ng-click="edit(project.id)">
+					                		<md-icon md-svg-icon="resources/img/icons/ic_mode_edit_24px.svg"></md-icon>
+					                	</md-button>
+				                		 <md-button title="Excluir" class="md-icon-button" ng-click="deleteProject($event,project.id)">
+					                		<md-icon md-svg-icon="resources/img/icons/trash-icon-black.svg"></md-icon>
+					                	</md-button>
+				                	</div>
+				                </td>
+				              </tr>
+				            </tbody>
+	          			</table>
+					</md-table-container>
+					<md-table-pagination md-limit="optionTable.limit" md-page="page" md-total="{{totalRegisters}}" 
+						md-page-select="optionTable.pageSelect" md-boundary-links="optionTable.boundaryLinks" md-label="{{labelPagination}}" md-on-paginate="searchPage">
+					</md-table-pagination>
+			    </md-card-content>
+			</md-card>
+		</div>
+	</md-content>
+</form>

@@ -1,0 +1,229 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>br.com.scopus.simulador</groupId>
+	<artifactId>simulador</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Simulador Mainframe</name>
+	
+	<modules>
+		<module>simulador-repository</module>
+		<module>simulador-dto</module>
+		<module>simulador-business</module>
+		<module>simulador-portal-webservice</module>
+		<module>simulador-portal</module>
+	</modules>
+	
+	<properties>
+		
+		<jerimum.version>1.0.9-SNAPSHOT</jerimum.version>
+		<simulador.version>1.0-SNAPSHOT</simulador.version>
+		
+		<!-- isd -->
+		<isd.version>3.0.01</isd.version>
+		
+		<!-- angularjs/bootstrap -->
+		<jquery.version>2.2.3</jquery.version>
+		<jquery.ui.version>1.11.4</jquery.ui.version>
+		<angularjs.version>1.5.5</angularjs.version>
+		<angularjs.ui.router.version>0.2.18</angularjs.ui.router.version>
+		<bootstrap.version>3.3.6</bootstrap.version>
+		<angular.growl.2.version>0.7.3</angular.growl.2.version>
+		<!-- Web Resource Optimizer for Java -->
+		<wro4j.version>1.7.6</wro4j.version>
+		
+		<jtds.version>1.3.1</jtds.version>
+		<sqlserver.jdbc.version>6.0</sqlserver.jdbc.version>
+		
+		<!-- moment.js -->
+		<momentjs.version>2.18.1</momentjs.version>
+		
+		<!-- junit -->
+		<junit.version>4.12</junit.version>
+		<jacoco.maven.plugin.version>0.7.4.201502262128</jacoco.maven.plugin.version>
+		<fixture.factory.version>3.1.0</fixture.factory.version>
+		<assertj.version>3.4.0</assertj.version>
+		<springtestdbunit.version>1.2.1</springtestdbunit.version>
+		<hsqldb.version>2.3.4</hsqldb.version>
+		<dbunit.version>2.5.1</dbunit.version>
+		
+		<!-- maven -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.plugin>3.3</maven.compiler.plugin>
+		<maven.archetype.packaging>2.4</maven.archetype.packaging>
+		<maven.archetype.plugin>2.4</maven.archetype.plugin>
+		<maven.resources.plugin>2.6</maven.resources.plugin>
+		<maven.war.plugin>2.6</maven.war.plugin>
+		<maven.jar.plugin>2.6</maven.jar.plugin>
+
+		<!-- Servidor Sonatype NEXUS -->
+		<ip.nexus>srvtfsbld2:8084</ip.nexus>
+		
+	</properties>
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<mvn.database.databaseName>ceted000</mvn.database.databaseName>
+				<mvn.database.owner>dbo</mvn.database.owner>
+			    <mvn.database.dialect>org.hibernate.dialect.SQLServer2012Dialect</mvn.database.dialect>
+			    <mvn.database.driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</mvn.database.driver>
+			    <mvn.database.hostname>172.16.146.30</mvn.database.hostname>
+<!-- 			    <mvn.database.hostname>10.170.40.10</mvn.database.hostname> -->
+			    <mvn.database.port>1433</mvn.database.port>
+			    <mvn.database.sid></mvn.database.sid>
+			    <mvn.database.username>ceted000</mvn.database.username>
+			    <mvn.database.password>Scopus2015</mvn.database.password>
+				<mvn.database.url>jdbc:sqlserver://${mvn.database.hostname}:${mvn.database.port};databaseName=${mvn.database.databaseName};user=${mvn.database.username};password=${mvn.database.password}</mvn.database.url>
+			    <mvn.database.show.sql>true</mvn.database.show.sql>
+			    <mvn.database.jndi.datasource.name>jdbc/${mvn.database.databaseName}</mvn.database.jndi.datasource.name>
+				<mvn.environment>default</mvn.environment>
+				<mvn.simuladorws.host>localhost</mvn.simuladorws.host>
+				<mvn.simuladorws.port>8080</mvn.simuladorws.port>
+				<mvn.log.path>C:/Temp</mvn.log.path>
+				<mvn.log.pattern>[%date{yyyy-MM-dd HH:mm:ss.SSS}] [%-25thread] [%-5level] %logger{36} - %msg%n</mvn.log.pattern>
+				
+				<!-- E-mail properties -->
+			    <mvn.email.sender.auth>false</mvn.email.sender.auth>
+			    <mvn.email.sender.debug>false</mvn.email.sender.debug>
+			    <mvn.email.sender.from>pushservices@scopus.com.br</mvn.email.sender.from>
+			    <mvn.email.sender.hostname>webmail.scopus.com.br</mvn.email.sender.hostname>
+			    <mvn.email.sender.password>Scopus1212</mvn.email.sender.password>
+			    <mvn.email.sender.port>25</mvn.email.sender.port>
+			    <mvn.email.sender.protocol>smtp</mvn.email.sender.protocol>
+			    <mvn.email.sender.tlsenable>true</mvn.email.sender.tlsenable>
+			    <mvn.email.sender.username>pushservices@scopus.com.br</mvn.email.sender.username>
+			</properties>
+		</profile>
+		<profile>
+			<id>dali</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<mvn.environment>default</mvn.environment>
+				<mvn.simuladorws.port>9080</mvn.simuladorws.port>
+			</properties>
+		</profile>
+		<profile>
+			<id>junit</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<mvn.database.databaseName></mvn.database.databaseName>
+				<mvn.database.owner></mvn.database.owner>
+ 				<mvn.database.dialect>org.hibernate.dialect.HSQLDialect</mvn.database.dialect>
+			    <mvn.database.driver>org.hsqldb.jdbcDriver</mvn.database.driver>
+			    <mvn.database.hostname></mvn.database.hostname>
+			    <mvn.database.port></mvn.database.port>
+			    <mvn.database.username>sa</mvn.database.username>
+			    <mvn.database.password></mvn.database.password>
+				<mvn.database.url>jdbc:hsqldb:mem:PUBLIC:sql.syntax_mss=true</mvn.database.url>
+			    <mvn.database.show.sql>true</mvn.database.show.sql>
+			    <mvn.database.jndi.datasource.name></mvn.database.jndi.datasource.name>
+				<mvn.simuladorws.host>localhost</mvn.simuladorws.host>
+				<mvn.simuladorws.port>8080</mvn.simuladorws.port>
+				<mvn.environment>test</mvn.environment>
+				<mvn.log.path>C:/Temp</mvn.log.path>
+				<mvn.log.pattern>[%date{yyyy-MM-dd HH:mm:ss.SSS}] [%-25thread] [%-5level] %logger{36} - %msg%n</mvn.log.pattern>
+				
+				<!-- E-mail properties -->
+			    <mvn.email.sender.auth>false</mvn.email.sender.auth>
+			    <mvn.email.sender.debug>false</mvn.email.sender.debug>
+			    <mvn.email.sender.from>pushservices@scopus.com.br</mvn.email.sender.from>
+			    <mvn.email.sender.hostname>webmail.scopus.com.br</mvn.email.sender.hostname>
+			    <mvn.email.sender.password>Scopus1212</mvn.email.sender.password>
+			    <mvn.email.sender.port>25</mvn.email.sender.port>
+			    <mvn.email.sender.protocol>smtp</mvn.email.sender.protocol>
+			    <mvn.email.sender.tlsenable>true</mvn.email.sender.tlsenable>
+			    <mvn.email.sender.username>pushservices@scopus.com.br</mvn.email.sender.username>
+			</properties>
+		</profile>
+		<profile>
+			<id>coverage-per-test</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<version>2.13</version>
+						<configuration>
+							<properties>
+								<property>
+									<name>listener</name>
+									<value>org.sonar.java.jacoco.JUnitListener</value>
+								</property>
+							</properties>
+						</configuration>
+					</plugin>
+					<plugin>
+				        <groupId>org.jacoco</groupId>
+				        <artifactId>jacoco-maven-plugin</artifactId>
+				        <version>${jacoco.maven.plugin.version}</version>
+				    </plugin>
+				</plugins>
+			</build>
+			<dependencies>
+				<dependency>
+					<groupId>org.sonarsource.java</groupId>
+					<artifactId>sonar-jacoco-listeners</artifactId>
+					<version>3.8</version>
+					<scope>test</scope>
+				</dependency>
+			</dependencies>
+		</profile>
+	</profiles>
+	
+	<!-- deploy artifacts into this repo -->
+	<distributionManagement>
+		<repository>
+			<id>central</id>
+			<name>Repositorio de Releases</name>
+			<url>http://${ip.nexus}/nexus/content/repositories/releases/</url>
+		</repository>
+		<snapshotRepository>
+			<id>nexus</id>
+			<name>Repositorios de Snapshots</name>
+			<url>http://${ip.nexus}/nexus/content/repositories/snapshots/</url>
+		</snapshotRepository>
+	</distributionManagement>
+
+	<!-- download artifacts from this repo -->
+	<repositories>
+		<repository>
+			<id>central</id>
+			<name>nexus</name>
+			<url>http://${ip.nexus}/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+	
+	<!-- download plugins from this repo -->
+	<pluginRepositories>
+		<pluginRepository>
+			<id>central</id>
+			<name>nexus</name>
+			<url>http://${ip.nexus}/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	
+</project>

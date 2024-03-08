@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0"
+    	 metadata-complete="true"
+    	 xmlns="http://java.sun.com/xml/ns/javaee" 
+    	 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    	 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+
+	<display-name>simulador-portal-webservice</display-name>
+	
+	<session-config>
+		<!-- The session-timeout element defines the default session timeout interval 
+			for all sessions created in this web application. The specified timeout must 
+			be expressed in a whole number of minutes. If the timeout is 0 or less, the 
+			container ensures the default behaviour of sessions is never to time out. 
+			If this element is not specified, the container must set its default timeout 
+			period. -->
+		<session-timeout>15</session-timeout>
+	</session-config>
+
+</web-app>

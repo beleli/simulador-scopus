@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<Context>
+
+	<Resource name="${mvn.database.jndi.datasource.name}"
+			  driverClassName="${mvn.database.driver}"
+			  url="${mvn.database.url}"
+			  username="${mvn.database.username}"
+			  password="${mvn.database.password}"
+			  auth="Container"  
+			  validationQuery="SELECT 1;" 
+			  type="javax.sql.DataSource"/>
+
+</Context>

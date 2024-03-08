@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br" ng-app="simuladorApp">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="pragma" content="no-cache" />  
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Simulador Mainframe</title>
+	<link href="wro/simulador-application.css" rel="stylesheet"/>
+	<link href="template/css/angular/angular-material.min.css" rel="stylesheet"/>
+	<link href="template/css/angular/angular-growl.min.css" rel="stylesheet"/>
+	<link href="wro/wro-md-data-table.css" rel="stylesheet"/>
+	
+</head>
+
+<body ng-cloak class="ng-cloak" layout="column" ng-controller="indexCtrl"> 
+	 <div class="container-fluid">
+	<div growl></div>
+	</div>
+	
+ 	<md-content class="application-content" layout="column" ng-if="authenticated">
+		<div ng-include="'pages/restricted/menu/menu-top.html'" style="z-index: 70;"></div>
+
+		<md-content layout="row" >
+			<div layout="column">
+				<div ng-include="'pages/restricted/menu/menu-left.html'" /></div>
+			</div>
+			<md-content class="width-100 overflow-x-hidden">
+			    <div layout="row" id="content" class="width-100" layout-align="center center">
+		          <div ui-view layout-margin-gt-xs layout-padding flex="90" flex-gt-md="85" flex-xs="100" flex-sm="100" ></div>
+		        </div>
+			</md-content>
+    	</md-content>
+	</md-content>
+	
+	<div ui-view ng-cloak="" flex="noshrink" class=" md-padding ng-scope flex-noshrink application-content" ng-if="!authenticated"></div>
+	
+	<!-- JS COMUNS  -->
+<script src="wro/wro-jquery.js" type="text/javascript"></script>
+<script src="wro/wro-angularjs.js" type="text/javascript"></script>
+<script src="template/js/angular/angular-material.min.js"></script>
+<script src="wro/wro-md-data-table.js" type="text/javascript"></script>
+<script src="template/js/angular/angular-material.min.js"></script>
+<script src="wro/simulador-application.js" type="text/javascript"></script>
+<script src="wro/wro-momentjs.js" type="text/javascript"></script>
+
+</body>
+
+</html>

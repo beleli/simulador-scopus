@@ -1,0 +1,245 @@
+<form class="form" name="formTestMass" novalidate ng-submit="save()">
+	<md-content style="overflow: visible">
+		<div>
+			<md-card class="no-margin">
+				<md-toolbar>
+					<div class="md-toolbar-tools">
+						<h2>{{ 'MENU_TEST_MASS' | translate }}</h2>
+						<span flex></span>
+					</div>
+		   		</md-toolbar>
+				<md-card-content class="md-padding layout-align-center-stretch" layout-get-xs="column" layout-align="center">
+				<md-tabs md-dynamic-height md-border-bottom md-selected="selectedTabIndex">
+					 <md-tab label="Cadastro">
+					 	<md-card-content class="md-padding">
+							<div layout="row" layout-align="end end">
+								<div layout-align="end" class="text-font-12">
+									<md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'LBL_FIELDS_SEARCH' | translate }}
+								</div>
+							</div>
+							<div layout-gt-xs="row">
+						  	  	<md-autocomplete flex flex-gt-xs="50"
+						  	  					 required
+						  	  					 md-require-match="true"
+							  	                 md-no-cache="true"
+							  	                 md-input-name="acTransaction"
+							    				 md-selected-item="transaction"
+										         md-search-text="searchText"
+										         md-items="item in searchTransaction(searchText)"
+										         md-item-text="item.name"
+										         md-min-length="3"
+										         md-floating-label="{{ 'NAME_TRANSACTION' | translate }}"
+										         append-icon="resources/img/icons/ic_search_24px.svg"
+										         md-selected-item-change="changeTransactionFields(transaction.id)">
+									<md-item-template>
+										<span md-highlight-text="searchText" md-highlight-flags="^i">{{item.name | translate}}</span>
+									</md-item-template>
+									<md-not-found>{{'NENHUM_REGISTRO_ENCONTRADO' | translate}}</md-not-found>
+									<div ng-if="formTestMass.acTransaction.$touched" ng-messages="formTestMass.acTransaction.$error">
+										<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+										<div ng-message="md-require-match">{{ 'MESSAGE_ERROR_TRANSACTION_NOT_FOUND' | translate }}</div>
+									</div>
+								</md-autocomplete>
+					  		</div>
+							<div layout-gt-xs="row">
+								<md-input-container class="md-block" flex flex-gt-xs="50">
+									<label for="scenario">{{ 'TEST_SCENARIO' | translate }}</label>
+									<md-select name="scenario" id="scenario" ng-model="testMass.testScenarioId" ng-required="scenarioRequired">
+										<md-option ng-repeat="scenario in scenarios" value="{{scenario.id}}">{{scenario.name}}</md-option>
+									</md-select>
+									<div ng-if="formTestMass.scenario.$touched" ng-messages="formTestMass.scenario.$error">
+										<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+									</div>
+								</md-input-container>
+							</div>
+							<div layout-gt-xs="row">
+								<md-input-container class="md-block" flex flex-gt-xs="50">
+									<label for="project"><md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"/>{{ 'CODE_PROJECT' | translate }}</label>
+									<md-select name="project" id="project" ng-model="testMass.projectId" ng-change="projectChange()">
+										<md-option><em>{{ 'NONE' | translate }}</em></md-option>
+										<md-option ng-repeat="project in projects" value="{{project.id}}">{{project.name | translate }}</md-option>
+									</md-select>
+								</md-input-container>
+							</div>
+							<div layout-gt-xs="row">
+								<md-input-container class="md-block" flex flex-gt-xs="50">
+									<label>{{ 'DESCRIPTION_TEST_MASS' | translate }}</label>
+									<input type="text" name="description" id="description" ng-model="testMass.description" maxlength="60"/>
+								</md-input-container>
+							</div>
+							<div layout-gt-xs="row">
+								<md-input-container class="md-block" flex flex-gt-xs="50">
+										<label>{{' RESPONSE_TIME ' | translate}}</label>
+										<input type="number" name="timeout" id="timeout" ng-model="testMass.timeout" maxlength="30" min="0" required/>
+										<div ng-if="formTestMass.timeout.$touched" ng-messages="formTestMass.timeout.$error">
+											<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate}}</div>
+											<div ng-message="maxlength">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate: {maxlength = "30"}'' }}</div>
+											<div ng-message="min">{{ 'MESSAGE_ERROR_MIN_VALUE' | translate: '{ min: "0" }' }}</div>
+										</div>
+									</md-input-container>
+							</div>
+							<div layout-gt-xs="row">
+								<md-input-container class="md-block" flex flex-gt-xs="50">
+									<label>{{ 'FAIL_PERCENT' | translate}}</label>
+									<input type="number" name="errorAverage" id="errorAverage" ng-model="testMass.errorAverage" maxlength="3" min="0" max="100" required/>
+									<div ng-if="formTestMass.errorAverage.$touched" ng-messages="formTestMass.errorAverage.$error">
+										<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate}}</div>
+										<div ng-message="maxlength">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate: {maxlength = "30"} ''}}</div>
+										<div ng-message="min">{{ 'MESSAGE_ERROR_MIN_VALUE' | translate: '{ min: "0" }' }}</div>
+										<div ng-message="max">{{ 'MESSAGE_ERROR_MAX_VALUE' | translate: '{ max: "100" }'  }}</div>
+									</div>
+								</md-input-container>
+							</div>
+							<div layout-gt-xs="row">
+								<md-input-container class="md-block" flex flex-gt-xs="50">
+									<label>{{ 'RESPONSE_REPEAT' | translate}}</label>
+									<input type="number" name="occurrences" id="occurrences" ng-model="testMass.occurrences" maxlength="50" min="1" required/>
+									<div ng-if="formTestMass.occurrences.$touched" ng-messages="formTestMass.occurrences.$error">
+										<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate}}</div>
+										<div ng-message="maxlength">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate: {maxlength = "50"} ''}}</div>
+										<div ng-message="min">{{ 'MESSAGE_ERROR_MIN_VALUE' | translate: '{ min: "1" }' }}</div>
+									</div>
+								</md-input-container>
+							</div>
+							<div layout-gt-xs="row">
+								<md-input-container class="md-block" flex flex-gt-xs="50">
+									<label>{{ 'RESTART_AREA' | translate }}</label>
+									<input type="text" name="restart" id="restart" ng-model="testMass.restart" maxlength="255"/>
+								</md-input-container>
+							</div>
+							<div layout-gt-xs="row">
+								<md-input-container class="md-block" flex flex-gt-xs="50">
+									<label>{{ 'RETURN_CODE' | translate }}</label>
+									<input type="number" name="returnCode" id="returnCode" ng-model="testMass.returnCode" maxlength="50" required/>
+									<div ng-if="formTestMass.returnCode.$touched" ng-messages="formTestMass.returnCode.$error">
+										<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate}}</div>
+										<div ng-message="maxlength">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate: {maxlength = "50"}'}}></div>
+									</div>
+								</md-input-container>
+							</div>
+						</md-card-content>
+					 </md-tab>
+					 <md-tab label="{{'INPUT_DATA' | translate }}">
+					 	<md-card-content class="md-padding">
+							<table md-table md-progress="promise">
+							 	
+								<thead md-head>
+									<tr md-row>
+										<th md-column hide-xs><span>{{ 'SEQUENCY' | translate }}</span></th>
+										<th md-column hide-xs><span>{{ 'NAME' | translate }} </span></th>
+										<th md-column hide-xs><span>{{ 'SIZE' | translate }}</span></th>
+										<th md-column hide-xs><span>{{ 'TYPE' | translate }}</span></th>
+										<th md-column hide-xs><span>{{ 'VALUE' | translate }}</span></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr md-row ng-repeat="input in testMass.inputList" style="height: 40px;">
+										<td md-cell hide-xs>{{input.ordinal}}</td>
+										<td md-cell hide-xs>{{input.name}}</td>
+										<td md-cell hide-xs>{{input.size}}</td>
+										<td md-cell hide-xs>{{input.type}}</td>
+										<td md-cell hide-xs>
+											<input ng-disabled = "input.readyOnly" type="text" ng-model="input.value" maxlength="{{input.size}}"/>
+										</td>
+									</tr>
+					            </tbody>
+							</table>
+							<md-divider style="margin-bottom: 10px;"></md-divider>
+								<label>{{ 'LABEL_QUANTITY_OF_INPUT_BYTES' | translate }}<b>{{qtdBytesInput}}</b></label>
+							<md-divider style="margin-top: 10px;"></md-divider>
+						</md-card-content>
+					 </md-tab>
+					 <md-tab label="{{'OUTPUT_DATA' | translate }}">
+					 	<md-card-content class="md-padding">
+							<md-subheader class="md-no-sticky" for="outputTable">{{ 'LABEL_TEST_MASS_ACTION' | translate }}</md-subheader>
+						 	<table id="outputTable" name="outputTable" md-table md-progress="promise">
+								<thead md-head>
+									<tr md-row>
+										<th md-column hide-xs><span>{{ 'SEQUENCY' | translate }}</span></th>
+										<th md-column hide-xs><span>{{ 'NAME' | translate }} </span></th>
+										<th md-column hide-xs><span>{{ 'SIZE' | translate }}</span></th>
+										<th md-column hide-xs><span>{{ 'TYPE' | translate }}</span></th>
+										<th md-column hide-xs><span>{{ 'ACTION' | translate }}</span></th>
+										<th md-column hide-xs><span>{{ 'VALUE' | translate }}</span></th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr md-row ng-repeat="output in testMass.outputList" style="height: 40px;">
+										<td md-cell hide-xs>{{output.ordinal}}</td>
+										<td md-cell hide-xs>{{output.name}}</td>
+										<td md-cell hide-xs>{{output.size}}</td>
+										<td md-cell hide-xs>{{output.type}}</td>
+										<td md-cell hide-xs>
+											<md-select name="actions" id="actions" ng-model="output.copyFieldId" ng-required="true">
+												<md-option ng-repeat="action in output.actions" value="{{action.id}}">{{action.name}}</md-option>
+											</md-select>
+										</td>
+										<td md-cell hide-xs>
+											<input ng-disabled="output.copyFieldId != '-1'" type="text" ng-model="output.value"
+												maxlength="{{output.size}}" ng-required="output.copyFieldId == '-1'"/>
+										</td>
+									</tr>
+					            </tbody>
+							</table>
+							<md-divider style="margin-bottom: 10px;"></md-divider>
+						 		<label>{{'LABEL_QUANTITY_OF_OUTPUT_BYTES' | translate}}<b>{{qtdBytesOutput}}</b></label>
+							<md-divider style="margin-top: 10px;"></md-divider>
+						</md-card-content>
+					</md-tab>
+				</md-tabs>
+				<section layout="row" layout-align="center center" layout-wrap class="section-buttons">
+					<md-button type="button" ng-click="clearFields()" class="md-raised md-primary" flex-xs='100'>
+						<md-icon md-svg-icon="resources/img/icons/ic_clear_24px.svg"></md-icon>
+						{{'CLEAR' | translate }}
+					</md-button>
+	
+					<md-button type="button" ng-click="search()" class="md-raised md-primary" flex-xs='100' >
+						<md-icon md-svg-icon="resources/img/icons/ic_search_24px.svg"></md-icon>
+						{{'SEARCH' | translate }}
+					</md-button>
+	
+					<md-button type="submit" id="btnSave" ng-disabled="!formTestMass.$valid" valid-disabled class="md-raised md-primary" flex-xs='100'>
+						<md-icon md-svg-icon="resources/img/icons/ic_save_24px.svg" ></md-icon>
+						{{'SAVE' | translate }}
+					</md-button>
+				</section>
+			</md-card>
+			<md-card class="no-margin card-grid">
+				<md-card-content class="md-padding" layout="column" layout-align="center">
+					<p>{{ 'SEARCH_FIELDS' | translate }}</p>
+					<md-table-container>
+						<table md-table md-progress="promise">
+							<thead md-head>
+								<tr md-row>
+									<th md-column hide-xs><span>{{ 'NAME_TRANSACTION' | translate }} </span></th>
+									<th md-column hide-xs><span>{{ 'DESCRIPTION' | translate }}</span></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr md-row ng-repeat="t in testMassList" >
+									<td md-cell hide-xs>{{t.transactionName}}</td>
+									<td md-cell hide-xs>{{t.description}}</td>
+					                <td md-cell>
+					                	<div layout-align="end center" layout="row" layout-xs="column">
+					                		<md-button class="md-icon-button" ng-click="edit(t.id)" title="Editar" >
+						                		<md-icon md-svg-icon="resources/img/icons/ic_mode_edit_24px.svg"></md-icon>
+						                	</md-button>
+						                	<md-button class="md-icon-button" ng-click="deleteTestMass($event, t.id)" title="Excluir">
+					                			<md-icon md-svg-icon="resources/img/icons/trash-icon-black.svg">
+					                		</md-icon>
+					                	</md-button>
+					                	</div>
+					                </td>
+								</tr>
+				            </tbody>
+						</table>
+					</md-table-container>
+					<md-table-pagination md-limit="optionTable.limit" md-page="page" md-total="{{totalRegisters}}"
+						md-page-select="optionTable.pageSelect" md-boundary-links="optionTable.boundaryLinks"
+						md-label="{{labelPagination}}" md-on-paginate="searchPage">
+					</md-table-pagination>
+				</md-card-content>
+			</md-card>
+		</div>
+	</md-content>
+</form>

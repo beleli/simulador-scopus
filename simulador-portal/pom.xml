@@ -1,0 +1,177 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>simulador-portal</artifactId>
+	<name>Simulador Mainframe - Portal web</name>
+	<packaging>war</packaging>
+
+	<parent>
+		<groupId>br.com.scopus.simulador</groupId>
+		<artifactId>simulador</artifactId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>br.com.scopus.simulador</groupId>
+			<artifactId>simulador-dto</artifactId>
+			<version>${simulador.version}</version>
+		</dependency>
+		<dependency>
+	        <groupId>javax.annotation</groupId>
+	        <artifactId>jsr250-api</artifactId>
+	        <version>1.0</version>
+	    </dependency>	
+	    
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.3.2</version>
+		</dependency>
+	    
+		<!-- test -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.assertj</groupId>
+			<artifactId>assertj-core</artifactId>
+			<version>${assertj.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<finalName>${artifactId}</finalName>
+		<resources>
+			<resource>
+				<directory>src/config</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>application.properties</include>
+				</includes>
+				<targetPath>${project.basedir}/src/main/resources/META-INF/environment/${mvn.environment}/</targetPath>
+			</resource>
+			<resource>
+				<directory>src/config</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>logback.xml</include>
+				</includes>
+				<targetPath>${project.basedir}/src/main/resources/META-INF/environment/${mvn.environment}/</targetPath>
+			</resource>
+			<resource>
+				<directory>src/config</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>context.xml</include>
+				</includes>
+				<targetPath>${project.basedir}/src/main/webapp/META-INF/</targetPath>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+		</resources>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>2.6</version>
+				<configuration>
+					<encoding>${project.build.sourceEncoding}</encoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.3</version>
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+					<warName>${artifactId}</warName>
+					<packagingIncludes>WEB-INF/lib/*.jar,WEB-INF/classes/**,**/*.xml, **/*.properties, **/*.html, **/wro/*.css, **/template/css/angular/angular-material.min.css, **/template/js/angular/angular-material.min.js, **/wro/*.js, **/resources/i18n/*.json, **/resources/img/icons/**.svg, **/resources/img/icons/sets/**.svg</packagingIncludes>
+				</configuration>
+			</plugin>
+			
+			<!-- Web Resource Optimizer for Java -->
+			<plugin>
+				<groupId>ro.isdc.wro4j</groupId>
+				<artifactId>wro4j-maven-plugin</artifactId>
+				<version>${wro4j.version}</version>
+				<executions>
+					<execution>
+						<phase>compile</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
+					<minimize>true</minimize>
+					<wroFile>${basedir}/src/main/webapp/wro/wro.xml</wroFile>
+					<extraConfigFile>${basedir}/src/main/webapp/wro/wro.properties</extraConfigFile>
+					<contextFolder>${basedir}/src/main/webapp/wro,${basedir}/src/main/webapp</contextFolder>
+      				<destinationFolder>${basedir}/src/main/webapp/wro/</destinationFolder>
+					<cssDestinationFolder>${basedir}/src/main/webapp/wro</cssDestinationFolder>
+					<jsDestinationFolder>${basedir}/src/main/webapp/wro</jsDestinationFolder>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.webjars</groupId>
+						<artifactId>angularjs</artifactId>
+						<version>${angularjs.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.webjars</groupId>
+						<artifactId>angular-ui-router</artifactId>
+						<version>${angularjs.ui.router.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.webjars</groupId>
+						<artifactId>angular-growl-2</artifactId>
+						<version>${angular.growl.2.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.webjars</groupId>
+						<artifactId>bootstrap</artifactId>
+						<version>${bootstrap.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.webjars</groupId>
+						<artifactId>jquery</artifactId>
+						<version>${jquery.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>org.webjars</groupId>
+						<artifactId>jquery-ui</artifactId>
+						<version>${jquery.ui.version}</version>
+					</dependency>
+							<dependency>
+						<groupId>org.webjars</groupId>
+						<artifactId>momentjs</artifactId>
+						<version>${momentjs.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+	
+</project>

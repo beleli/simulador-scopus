@@ -1,0 +1,105 @@
+<form class="form" name="formUsers" novalidate ng-submit="save()">
+	<md-content style="overflow: visible">
+		<div>
+			<md-card class="no-margin"> <md-toolbar>
+				<div class="md-toolbar-tools">
+					<h2>{{ 'MENU_USERS' | translate }}</h2>
+					<span flex></span>
+				</div>
+				</md-toolbar>
+				<md-card-content class="md-padding layout-align-center-stretch" layout-gt-xs="column" layout-align="center">
+					<div layout="row" layout-align="end end">
+						<div layout-align="end" class="text-font-12">
+							<md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'LBL_FIELDS_SEARCH' | translate }}
+						</div>
+					</div>
+					<div layout-gt-xs="row">
+						<md-input-container class="md-block" flex flex-gt-xs>
+							<label for="userName"><md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'NAME' | translate }}</label>
+							<input type="text" name="name" id="name" ng-model="user.name" ng-maxlength="60" required/>
+							<div ng-if="formUsers.name.$touched" ng-messages="formUsers.name.$error">
+								<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+								<div ng-message="maxlength">{{ 'MESSAGE_ERROR_MAX_LENGTH' | translate:'{ maxlength: "60" }' }}</div>
+							</div>
+						</md-input-container>
+						<div flex="5" hide-xs/>
+						<md-input-container class="md-block" flex flex-gt-xs>
+							<label for="email"><md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'EMAIL' | translate }}</label>
+							<input type="text" name="email" id="email" ng-model="user.email" ng-maxlength="255" required ng-pattern="/^.+@.+\..+$/"/>
+							<div ng-if="formUsers.email.$touched" ng-messages="formUsers.email.$error">
+								<div ng-message="pattern required maxlength"> {{ 'MESSAGE_ERROR_EMAIL_PATTERN' | translate }} </div>
+							</div>
+						</md-input-container>
+						<div flex="5" hide-xs />
+					</div>
+					<div layout-gt-xs="row">
+						<md-input-container class="md-block" flex flex-gt-xs>
+							<label for="profile">{{ 'SELECT_PROFILE' | translate }}</label>
+							<md-select name="profile" id="profile" ng-model="user.idProfile" required>
+								<md-option ng-repeat="profile in profiles" value="{{profile.id}}"> {{ profile.name | translate}} </md-option>
+							</md-select>
+							<div ng-if="formUsers.profile.$touched" ng-messages="formUsers.profile.$error">
+								<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+							</div>
+						</md-input-container>
+						<div flex="5" hide-xs />
+						<div flex flex-gt-xs layout-align="start center" layout="row">
+							<div>
+								<md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>
+								<md-checkbox name="enabled" id="enabled" ng-model="user.enabled" class="md-primary"> {{ 'ENABLED' | translate }} </md-checkbox>
+							</div>
+						</div>
+					</div>
+				</md-card-content>
+				<section layout="row" layout-align="center center" layout-wrap class="section-buttons">
+					<md-button type="button" ng-click="clearFields()" class="md-raised md-primary" flex-xs='100'>
+						<md-icon md-svg-icon="resources/img/icons/ic_clear_24px.svg"></md-icon> {{ 'CLEAR' | translate }}
+					</md-button>
+					<md-button type="button" ng-click="search()" class="md-raised md-primary" flex-xs='100'>
+						<md-icon md-svg-icon="resources/img/icons/ic_search_24px.svg"></md-icon> {{ 'SEARCH' | translate }}
+					</md-button>
+					<md-button type="submit" ng-disabled="!formUsers.$valid" class="md-raised md-primary" flex-xs='100'>
+						<md-icon md-svg-icon="resources/img/icons/ic_save_24px.svg"></md-icon> {{ 'SAVE' | translate }}
+					</md-button>
+				</section>
+			</md-card>
+			<md-card class="no-margin card-grid">
+				<md-card-content class="md-padding" layout="column" layout-align="center">
+					<md-table-container>
+						<table md-table md-progress="promise">
+							<thead md-head>
+								<tr md-row>
+									<th md-column><span>{{ 'NAME' | translate }}</span></th>
+									<th md-column hide-xs><span>{{ 'EMAIL' | translate }}</span></th>
+									<th md-column hide-xs><span>{{ 'PROFILE' | translate }}</span></th>
+									<th md-column hide-xs><span>{{ 'ENABLED' | translate }}</span></th>
+									<th md-column class="th-action"></th>
+								</tr>
+							</thead>
+							<tbody md-body>
+								<tr md-row ng-repeat="user in users">
+									<td md-cell>{{user.name}}</td>
+									<td md-cell hide-xs>{{user.email}}</td>
+									<td md-cell hide-xs>{{user.nameProfile | translate }}</td>
+									<td md-cell ng-if="user.enabled" hide-xs>{{ 'YES' | translate }}</td>
+									<td md-cell ng-if="!user.enabled" hide-xs>{{ 'NO' | translate }}</td>
+									<td md-cell>
+										<div layout-align="end center" layout="row" layout-xs="column">
+											<md-button class="md-icon-button" ng-click="edit(user.id)" ng-if="!user.blocked">
+												<md-icon md-svg-icon="resources/img/icons/ic_mode_edit_24px.svg"></md-icon>
+											</md-button>
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</md-table-container>
+					<md-table-pagination md-limit="optionTable.limit" md-page="page" md-total="{{totalRegisters}}"
+						md-page-select="optionTable.pageSelect" md-boundary-links="optionTable.boundaryLinks"
+						md-label="{{labelPagination}}" md-on-paginate="searchPage">
+					</md-table-pagination>
+				</md-card-content>
+			</md-card>
+		</div>
+	</md-content>
+</form>

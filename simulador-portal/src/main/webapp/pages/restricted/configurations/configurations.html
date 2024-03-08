@@ -1,0 +1,128 @@
+<form class="form"  name="formConfigurations" novalidate ng-submit="save()">
+<md-content style="overflow: visible">
+	<div>
+		<md-card class="no-margin">
+			<md-toolbar>
+	      		<div class="md-toolbar-tools">
+		        	<h2>{{ 'MENU_CONFIGURATIONS' | translate }}</h2>
+		        	<span flex></span>
+		      </div>
+		    </md-toolbar>
+		    <md-card-content class="md-padding layout-align-center-stretch" layout-gt-xs="column" layout-align="center">
+		    	<div layout="row" layout-align="end end">
+			    	<div layout-align="end" class="text-font-12">
+			    		<md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'LBL_FIELDS_SEARCH' | translate }}
+			    	</div>
+		    	</div>
+			    <div layout-gt-xs="row">
+				    <md-input-container class="md-block" flex flex-gt-xs>
+			        	<label><md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'NAME' | translate }}</label>
+				        <input type="text" name="name" id="name" ng-model="configuration.name" ng-maxlength="40" required ng-pattern="/^[\s0-9a-zA-Z_\-]*$/">
+				        <div ng-if="formConfigurations.name.$touched" ng-messages="formConfigurations.name.$error">
+							<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+							<div ng-message="maxlength">{{ 'MESSAGE_ERROR_MAX_LENGTH' | translate:'{ maxlength: "40" }' }}</div>
+							<div ng-message="pattern">{{ 'MESSAGE_ERROR_SPECIAL_CHAR' | translate }}</div>
+				        </div>
+				    </md-input-container>
+				    <div flex="5" hide-xs/>
+					<md-input-container class="md-block" flex flex-gt-xs>
+						<label><md-icon md-svg-src="resources/img/icons/ic_search_24px.svg"></md-icon>{{ 'TYPE_TRANSACTION' | translate }}</label>
+						<md-select name="type" id="type" ng-model="configuration.transactionTypeId" required>
+							<md-option ng-repeat="type in transactionTypes" value="{{type.id}}">{{type.name | translate }}</md-option>
+						</md-select>
+						<div ng-if="formConfigurations.type.$touched" ng-messages="formConfigurations.type.$error">
+							<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate }}</div>
+						</div>
+					</md-input-container>
+				</div>
+			    <div layout-gt-xs="row">
+			    	<md-input-container class="md-block" flex flex-gt-xs="50">
+						<label>{{' PORT ' | translate}}</label>
+						<input type="number" name="port" id="port" ng-model="configuration.port" maxlength="4" min="1"  max="9999" required/>
+						<div ng-if="formConfigurations.port.$touched" ng-messages="formConfigurations.port.$error">
+							<div ng-message="min">{{ 'MESSAGE_ERROR_MIN_VALUE' | translate: '{ min: "1" }' }}</div>
+							<div ng-message="max">{{ 'MESSAGE_ERROR_MAX_VALUE' | translate: '{ max: "9999" }'  }}</div>
+							<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate}}</div>
+						</div>
+					</md-input-container>
+					<div flex="5" hide-xs/>
+			    	<md-input-container class="md-block" flex flex-gt-xs="50">
+						<label>{{' RESPONSE_TIME ' | translate}}</label>
+						<input type="number" name="timeout" id="timeout" ng-model="configuration.timeout" maxlength="6" min="1" max="999999" required/>
+						<div ng-if="formConfigurations.timeout.$touched" ng-messages="formConfigurations.timeout.$error">
+							<div ng-message="min">{{ 'MESSAGE_ERROR_MIN_VALUE' | translate: '{ min: "1" }' }}</div>
+							<div ng-message="max">{{ 'MESSAGE_ERROR_MAX_VALUE' | translate: '{ max: "999999" }'  }}</div>
+							<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate}}</div>
+						</div>
+					</md-input-container>
+					<div flex="5" hide-xs/>
+					<md-input-container class="md-block" flex flex-gt-xs="50">
+						<label>{{' BYTES_ACCESS ' | translate}}</label>
+						<input type="number" name="bytesAccess" id="bytesAccess" ng-model="configuration.bytesAccess" maxlength="4" min="1" max="9999" required/>
+						<div ng-if="formConfigurations.bytesAccess.$touched" ng-messages="formConfigurations.bytesAccess.$error">
+							<div ng-message="min">{{ 'MESSAGE_ERROR_MIN_VALUE' | translate: '{ min: "1" }' }}</div>
+							<div ng-message="max">{{ 'MESSAGE_ERROR_MAX_VALUE' | translate: '{ max: "9999" }'  }}</div>
+							<div ng-message="required">{{ 'MESSAGE_ERROR_REQUIRED_FIELD' | translate}}</div>
+						</div>
+					</md-input-container>
+				</div>
+		    </md-card-content>
+		    <section layout="row" layout-align="center center" layout-wrap class="section-buttons">
+	    		<md-button type="button" ng-click="clearFields()" class="md-raised md-primary" flex-xs='100'>
+              		<md-icon md-svg-icon="resources/img/icons/ic_clear_24px.svg"></md-icon>
+              		{{ 'CLEAR' | translate }}
+              	</md-button>
+                <md-button type="button" ng-click="search()" class="md-raised md-primary" flex-xs='100'>
+               		<md-icon md-svg-icon="resources/img/icons/ic_search_24px.svg"></md-icon>
+               		{{ 'SEARCH' | translate }}
+               	</md-button>
+                <md-button type="submit" ng-disabled="!formConfigurations.$valid" class="md-raised md-primary" flex-xs='100'>
+               		<md-icon md-svg-icon="resources/img/icons/ic_save_24px.svg"></md-icon>
+               		{{ 'SAVE' | translate }}
+               	</md-button>
+            </section>
+		</md-card>
+		<md-card class="no-margin card-grid">
+		    <md-card-content class="md-padding" layout="column" layout-align="center">
+		    	<md-table-container>
+		    		<table md-table md-progress="promise">
+			            <thead md-head>
+			              <tr md-row>
+			                <th md-column hide-xs><span>{{ 'NAME' | translate }}</span></th>
+			                <th md-column hide-xs><span>{{ 'TYPE_TRANSACTION' | translate }}</span></th>
+			                <th md-column hide-xs><span>{{ 'PORT' | translate }}</span></th>
+			                <th md-column hide-xs><span>{{ 'RESPONSE_TIME' | translate }}</span></th>	
+			                <th md-column hide-xs><span>{{ 'BYTES_ACCESS' | translate }}</span></th>
+			                <th md-column class="th-action"></th>
+			              </tr>
+			            </thead>
+			            <tbody md-body>
+			              <tr md-row ng-repeat="configuration in configurations" >
+			                <td md-cell hide-xs>{{configuration.name}}</td>
+			                <td md-cell hide-xs>{{configuration.transactionTypeName}}</td>
+			                <td md-cell hide-xs>{{configuration.port}}</td>
+			                <td md-cell hide-xs>{{configuration.timeout}}</td>
+			                <td md-cell hide-xs>{{configuration.bytesAccess}}</td>
+			                <td md-cell>
+			                	<div layout-align="end center" layout="row" layout-xs="column">
+			                		<md-button class="md-icon-button" title="Editar" ng-click="edit(configuration.id)">
+				                		<md-icon md-svg-icon="resources/img/icons/ic_mode_edit_24px.svg"></md-icon>
+				                	</md-button>
+			                		 <md-button title="Excluir" class="md-icon-button" ng-click="deleteConfiguration($event,configuration.id)">
+				                		<md-icon md-svg-icon="resources/img/icons/trash-icon-black.svg"></md-icon>
+				                	</md-button>
+			        
+			                	</div>
+			                </td>
+			              </tr>
+			            </tbody>
+          			</table>
+				</md-table-container>
+				<md-table-pagination md-limit="optionTable.limit" md-page="page" md-total="{{totalRegisters}}" 
+					md-page-select="optionTable.pageSelect" md-boundary-links="optionTable.boundaryLinks" md-label="{{labelPagination}}" md-on-paginate="searchPage">
+				</md-table-pagination>
+		    </md-card-content>
+		</md-card>
+	</div>
+</md-content>
+</form>

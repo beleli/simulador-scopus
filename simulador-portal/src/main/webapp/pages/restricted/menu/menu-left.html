@@ -1,0 +1,43 @@
+<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id='left' flex md-disable-backdrop 
+	style="background-color: rgb(255,255,255) !important;box-shadow: none;" md-is-open="leftOpen" md-is-locked-open="leftOpen && $mdMedia('gt-sm')">
+	<md-content layout-padding style="background-color: rgb(255,255,255) !important;overflow: hidden;">
+		<md-list ng-controller="menuCtrl"  style="width: 270px;">
+			<md-list-item layout="row" layout-align="center center" ng-click="navigateTo('configurations')"  ng-if="hasRole('ROLE_VIEW_CONFIGURATION')">
+				<md-icon md-svg-src="resources/img/icons/ic_planning.svg"></md-icon>
+          		<p>{{ 'MENU_CONFIGURATIONS' | translate }}</p>
+        	</md-list-item>
+			<md-list-item layout="row" layout-align="center center" ng-click="navigateTo('projetcs')"  ng-if="hasRole('ROLE_VIEW_PROJECT')">
+				<md-icon md-svg-src="resources/img/icons/ic_planning.svg"></md-icon>
+          		<p>{{ 'MENU_PROJECTS' | translate }}</p>
+        	</md-list-item>
+        	<md-list-item layout="row" layout-align="center center" ng-click="navigateTo('transactions')"  ng-if="hasRole('ROLE_VIEW_TRANSACTION')">
+				<md-icon md-svg-src="resources/img/icons/icon-transaction-menu.svg"></md-icon>
+          		<p>{{ 'MENU_TRANSACTION' | translate }}</p>
+        	</md-list-item>
+        	<md-list-item layout="row" layout-align="center center" ng-click="navigateTo('test-scenario')" ng-if="hasRole('ROLE_VIEW_TEST_SCENARIO')">
+        		<md-icon md-svg-src="resources/img/icons/test-icon.svg"></md-icon>
+        		<p>{{ 'MENU_TEST_SCENARIO' | translate }}</p>
+        	</md-list-item>
+        	<md-list-item layout="row" layout-align="center center" ng-click="navigateTo('test-mass')" ng-if="hasRole('ROLE_VIEW_TEST_MASS')">
+        		<md-icon md-svg-src="resources/img/icons/test-icon.svg"></md-icon>
+        		<p>{{ 'MENU_TEST_MASS' | translate }}</p>
+        	</md-list-item>	
+        	<md-list-item layout="row" layout-align="center center" ng-click="navigateTo('exercise-mass')" ng-if="hasRole('ROLE_VIEW_EXERCISE_MASS')">
+        		<md-icon md-svg-src="resources/img/icons/test-icon.svg"></md-icon>
+        		<p>{{ 'MENU_EXERCISE_MASS' | translate }}</p>
+        	</md-list-item>
+			<md-list-item layout="row" layout-align="center center" ng-click="navigateTo('users')"  ng-if="hasRole('ROLE_VIEW_USER')">
+				<md-icon md-svg-src="resources/img/icons/ic_person_black_24px.svg"></md-icon>
+          		<p>{{ 'MENU_USERS' | translate }}</p>
+        	</md-list-item>
+			<md-list-item layout="row" layout-align="center center" ng-click="navigateTo('change-password')"  ng-if="hasRole('ROLE_VIEW_CHANGE_PASSWORD')">
+				<md-icon md-svg-icon="resources/img/icons/ic_lock_black_24px.svg"></md-icon>
+          		<p>{{ 'MENU_CHANGE_PASSWORD' | translate }}</p>
+        	</md-list-item>
+			<md-list-item layout="row" layout-align="center center" ng-click="showConfirmExit($event)">
+				<md-icon md-svg-icon="resources/img/icons/ic_exit_to_app_24px.svg" style="color:black"></md-icon>
+          		<p>{{ 'QUIT_APP' | translate }}</p>
+        	</md-list-item>
+      	</md-list>
+	</md-content>
+</md-sidenav>
